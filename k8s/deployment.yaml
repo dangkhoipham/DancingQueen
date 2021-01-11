@@ -16,7 +16,7 @@ spec:
         - command:
             - npm
             - start
-          image: 418515969908.dkr.ecr.us-east-1.amazonaws.com/dancingqueen:latest 
+          image: 870472129713.dkr.ecr.us-east-1.amazonaws.com/dancing-queen:latest
           imagePullPolicy: Always
           name: dancing-queen-web
           ports:

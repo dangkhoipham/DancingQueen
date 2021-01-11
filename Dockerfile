@@ -1,4 +1,4 @@
-FROM node:6
+FROM 870472129713.dkr.ecr.us-east-1.amazonaws.com/node:latest
 
 # Deps
 RUN apt-get update && apt-get install -y ca-certificates git-core ssh nginx
