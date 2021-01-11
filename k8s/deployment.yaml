@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dancingqueen-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dancingqueen-web
+  template:
+    metadata:
+      labels:
+        app: dancingqueen-web
+    spec:
+      containers:
+        - command:
+            - npm
+            - start
+          image: 418515969908.dkr.ecr.us-east-1.amazonaws.com/dancingqueen:latest 
+          imagePullPolicy: Always
+          name: dancing-queen-web
+          ports:
+            - containerPort: 5000

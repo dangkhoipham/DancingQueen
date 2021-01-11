@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: dancingqueen-service
+spec:
+  selector:
+    app: dancingqueen-web
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 5000
