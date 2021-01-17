@@ -286,17 +286,17 @@ cloud_user@chauphan1c:~/DancingQueen$
 ```
 Source: AWS CodeCommit, repository: dancing-queen
 ```
-<img>
+![Admin](./.github/workflows/2.png)
 
 ```
 Choose the operating system, runtime and image.
 Make sure to check the tick box “Enable this flag if you want to build Docker Image…”
 ```
- 
+![Admin](./.github/workflows/3.png)
 
 15.	At the Build Command, chose Insert Build command and Switch to Editor
  
-<img>
+![Admin](./.github/workflows/4.png)
 
 16.	Put the buildspec.yaml file, make sure the ECR and repository name is correct
 ```
@@ -346,43 +346,45 @@ phases:
 ```
 17.	Check the service role of the CodeBuild, we will add policy to allow it write to AWS ECR
 
- <img>
+![Admin](./.github/workflows/5.png)
 
 ##### Click to it and go to IAM console, add policy
 
+![Admin](./.github/workflows/6.png)
  
 ##### Choose ECR Power and click attach policy, it allows CodeBuild to write your created image to AWS ECR
 
- 
+![Admin](./.github/workflows/7.png) 
 
 18.	Create CodePipeline EKS-CICD
 
-<img>
+![Admin](./.github/workflows/8.png)
 
 ##### Source stage refer to AWS CodeCommit repository
 
-<img>
+![Admin](./.github/workflows/9.png)
  
 ##### Add build stage refer to CodeBuild project we created.
  
+![Admin](./.github/workflows/10.png)
 
 ##### Skip the deploy stage, we will use Build stage in next
 
- 
+![Admin](./.github/workflows/11.png) 
 
 ###### And Create Pipeline
 
 19.	Try to change code in CodeCommit and see the build stage trigger, build new image and put the latest image to AWS ECR
  
-<img>
+![Admin](./.github/workflows/12.png) 
 
 ##### Click Details and see the Build stage log
  
-<img>
+![Admin](./.github/workflows/13.png) 
 
 ##### Image is pushed
 
-<img> 
+![Admin](./.github/workflows/14.png) 
 
  
 
