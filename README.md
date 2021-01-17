@@ -355,7 +355,7 @@ phases:
 
 ![Admin](./.github/workflows/6.png)
  
-##### Choose ECR Power and click attach policy, it allows CodeBuild to write your created image to AWS ECR
+##### Choose ECR Power User and click attach policy, it allows CodeBuild to write your created image to AWS ECR
 
 ![Admin](./.github/workflows/15.png) 
 
