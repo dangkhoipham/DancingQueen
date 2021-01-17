@@ -395,6 +395,150 @@ phases:
 ![Admin](./.github/workflows/14.png) 
 
 # Using CodeBuild buildspec.yaml to CI/CD apply to AWS EKS (cont.)
+##### There are 02 options you can apply in this stage: 1. using CodeBuild buildspec.yaml as a tricky stage to apply k8s manifest. 2. Using Lambda to to apply k8s manifest. I use option 1 :)
+1.	Create new Role with Trust Policy codebuild.amazonaws.com and Policy “Describe Cluster”
+It allows CodeBuild to run kubectl apply -f <file>.yaml to EKS
+
+![Admin](./.github/workflows/1-1.png) 
+
+![Admin](./.github/workflows/1-1.png) 
+
+![Admin](./.github/workflows/1-3.png)
+
+![Admin](./.github/workflows/1-4.png)
+
+![Admin](./.github/workflows/1-5.png)
+
+![Admin](./.github/workflows/1-6.png)
+
+20.	Create CodeBuild project name “Deploy” with the Role name we’ve already created.
+
+![Admin](./.github/workflows/1-7.png)
+
+21.	Edit the buildspec.yaml file as below
+Make sure the EKS_NAME, AWS_ECR, IMAGE_REPO_NAME is correct
+```
+version: 0.2
+env:
+  variables:
+     EKS_NAME: "floral-sheepdog-1610350243"
+     AWS_REGION: "us-east-1"
+     AWS_ECR: "870472129713.dkr.ecr.us-east-1.amazonaws.com"
+     IMAGE_REPO_NAME: "dancing-queen"
+     IMAGE_TAG: "latest"
+     # key: "value"
+  #parameter-store:
+     # key: "value"
+     # key: "value"
+  #secrets-manager:
+     # key: secret-id:json-key:version-stage:version-id
+     # key: secret-id:json-key:version-stage:version-id
+  #exported-variables:
+     # - variable
+     # - variable
+  #git-credential-helper: yes
+#batch:
+  #fast-fail: true
+  #build-list:
+  #build-matrix:
+  #build-graph:
+phases:
+  #install:
+    #If you use the Ubuntu standard image 2.0 or later, you must specify runtime-versions.
+    #If you specify runtime-versions and use an image other than Ubuntu standard image 2.0, the build fails.
+    #runtime-versions:
+      # name: version
+      # name: version
+    #commands:
+       #- apt update
+      # - command
+  #pre_build:
+    #commands:
+      # - command
+      # - command
+  build:
+    commands:
+      - aws eks --region $AWS_REGION update-kubeconfig --name $EKS_NAME
+      - kubectl apply -f ./k8s/deployment.yaml -f ./k8s/service.yaml
+  #post_build:
+    #commands:
+      # - command
+      # - command
+#reports:
+  #report-name-or-arn:
+    #files:
+      # - location
+      # - location
+    #base-directory: location
+    #discard-paths: yes
+    #file-format: JunitXml | CucumberJson
+#artifacts:
+  #files:
+    # - location
+    # - location
+  #name: $(date +%Y-%m-%d)
+  #discard-paths: yes
+  #base-directory: location
+#cache:
+  #paths:
+    # - paths
+```
+22.	Edit aws config map of EKS and add new role to RBAC of EKS cluster
+The mapRoles below is: hey, k8s, with the role CodeBuild-EKS-Role, please map it to username: cloud-admin and group: system-masters in k8s priviledges.
+
+##### kubectl edit configmaps aws-auth -n kube-system
+```
+apiVersion: v1
+data:
+  mapRoles: |
+    - groups:
+      - system:bootstrappers
+      - system:nodes
+      rolearn: arn:aws:iam::870472129713:role/eksctl-floral-sheepdog-1610350243-NodeInstanceRole-M2CVM3ZT4LZI
+      username: system:node:{{EC2PrivateDNSName}}
+    - groups:
+      - system:masters
+      rolearn: arn:aws:iam::870472129713:role/CodeBuild-EKS-Role
+      username: cloud-admin
+
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2021-01-11T07:50:37Z"
+  managedFields:
+  - apiVersion: v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:data:
+        .: {}
+        f:mapRoles: {}
+    manager: vpcLambda
+    operation: Update
+    time: "2021-01-11T07:50:37Z"
+  name: aws-auth
+  namespace: kube-system
+  resourceVersion: "1239"
+  selfLink: /api/v1/namespaces/kube-system/configmaps/aws-auth
+  uid: 6eafbc5e-0b31-413d-82d6-ac76fc525350
+```
+23.	Try to run new CodeBuild and see the logs
+
+![Admin](./.github/workflows/1-8.png)
+ 
+24.	Edit the CodePipeline to add Deploy stage
+ 
+![Admin](./.github/workflows/1-9.png)
+ 
+Add stage and action group “Deploy”
+ 
+![Admin](./.github/workflows/1-10.png)
+
+![Admin](./.github/workflows/1-11.png)
+
+Done and Save new Pipeline
+
+![Admin](./.github/workflows/1-12.png)
+
+25.	Change the code at git, commit, push it to AWS CodeCommit and see the code is built and deployed to AWS EKS! 😊
 
 
 
