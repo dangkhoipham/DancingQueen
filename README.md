@@ -432,7 +432,7 @@ The purpose of this role creation: this role allows CodeBuild to run kubectl app
 ![Admin](./.github/workflows/1-7.png)
 
 21.	Edit the buildspec.yaml file as below
-Make sure the EKS_NAME, AWS_ECR, IMAGE_REPO_NAME is correct
+> Make sure the EKS_NAME, AWS_ECR, IMAGE_REPO_NAME is correct
 ```
 version: 0.2
 env:
