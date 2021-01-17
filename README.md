@@ -107,3 +107,71 @@ golang                                     1.11                43a154fee764     
 node                                       6                   ab290b853066        20 months ago       884MB
 maven                                      3.6.0-jdk-8         938cf03ad8e9        21 months ago       636MB
 ```
+5. Create ECR repository `node` and `dancing-queen`. Note the repositoryUri returned.
+```
+cloud_user@chauphan1c:~/DancingQueen$ aws ecr create-repository --repository-name node
+{
+    "repository": {
+        "repositoryArn": "arn:aws:ecr:us-east-1:870472129713:repository/node",
+        "registryId": "870472129713",
+        "repositoryName": "node",
+        "repositoryUri": "870472129713.dkr.ecr.us-east-1.amazonaws.com/node",
+        "createdAt": "2021-01-11T07:56:07+00:00",
+        "imageTagMutability": "MUTABLE",
+        "imageScanningConfiguration": {
+            "scanOnPush": false
+        }
+    }
+}
+```
+```
+cloud_user@chauphan1c:~/DancingQueen$ aws ecr create-repository --repository-name dancing-queen
+{
+    "repository": {
+        "repositoryArn": "arn:aws:ecr:us-east-1:870472129713:repository/dancing-queen",
+        "registryId": "870472129713",
+        "repositoryName": "dancing-queen",
+        "repositoryUri": "870472129713.dkr.ecr.us-east-1.amazonaws.com/dancing-queen",
+        "createdAt": "2021-01-11T07:56:19+00:00",
+        "imageTagMutability": "MUTABLE",
+        "imageScanningConfiguration": {
+            "scanOnPush": false
+        }
+    }
+}
+```
+6.	Docker login to Repository URI as above
+
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 870472129713.dkr.ecr.us-east-1.amazonaws.com
+
+WARNING! Your password will be stored unencrypted in /home/cloud_user/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+
+#### Note: Your credential will be stored on config.json file. It's better use credential store as above suggestion.
+
+7.	Docker tag your local `node` repository
+
+```
+docker tag node:6 870472129713.dkr.ecr.us-east-1.amazonaws.com/node:latest
+```
+```
+cloud_user@chauphan1c:~/DancingQueen$ docker images
+REPOSITORY                                          TAG                 IMAGE ID            CREATED             SIZE
+dancingqueen                                        1.0                 9629e11b10fb        12 hours ago        1.18GB
+web-client                                          latest              e80e8f398cbe        6 days ago          1.02GB
+photo-storage                                       latest              a55255cff09d        6 days ago          1GB
+photo-filter                                        latest              9e79ede6d0ef        6 days ago          15.7MB
+nginx                                               latest              ae2feff98a0c        3 weeks ago         133MB
+quay.io/jetstack/cert-manager-controller            v1.1.0              89ac08abb500        6 weeks ago         64.5MB
+ubuntu                                              latest              d70eaf7277ea        2 months ago        72.9MB
+mven_api                                            latest              0299806524c3        4 months ago        636MB
+redis                                               latest              41de2cc0b30e        4 months ago        104MB
+postgres                                            latest              62473370e7ee        4 months ago        314MB
+golang                                              1.11                43a154fee764        17 months ago       796MB
+node                                                6                   ab290b853066        20 months ago       884MB
+870472129713.dkr.ecr.us-east-1.amazonaws.com/node   latest              ab290b853066        20 months ago       884MB
+maven                                               3.6.0-jdk-8         938cf03ad8e9        21 months ago       636MB
+```
