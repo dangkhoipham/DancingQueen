@@ -247,6 +247,7 @@ spec:
 11.	Generate Access Key for CodeCommit
 Go to IAM --> User --> your user --> Security Credential Tab --> HTTPS Git credentials for CodeCommit.
 Click Generate credentials and remember your access key ID and access key secret
+<img src=k8s/1.png>
 12.	Create CodeCommit repository
 ```
 cloud_user@chauphan1c:~/DancingQueen$ aws codecommit create-repository --repository-name dancing-queen
