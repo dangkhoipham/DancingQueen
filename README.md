@@ -88,8 +88,8 @@ DancingQueen/
     └── pages
         └── index.ejs
 ```
-4.	Check if the node:6 images is available, if not, pull it from Docker Hub by command docker pull node:lastest
-##### You should run the node js on AWS ECR, because each time you build, you don't waste time and bandwidth to download it from Docker Hub again, sometimes it will lead to alarm * limit resource * from Docker
+4.	Check if the node:6 images is available, if not, pull it from Docker Hub by command `docker pull node:lastest`
+##### You should run the node js on AWS ECR, because each time you build, you don't waste time and bandwidth to download it from Docker Hub again, and it will lead to alarm *limit resource* from Docker
 ```
 cloud_user@chauphan1c:~/DancingQueen$ docker images
 REPOSITORY                                 TAG                 IMAGE ID            CREATED             SIZE
