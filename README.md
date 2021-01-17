@@ -88,8 +88,8 @@ DancingQueen/
     └── pages
         └── index.ejs
 ```
-4.	Check if the node:6 images is available, if not, pull it from Docker Hub by command `docker pull node:lastest`
-##### You should run the node js on AWS ECR, because each time you build, you don't waste time and bandwidth to download it from Docker Hub again, and it will lead to alarm *limit resource* from Docker
+4.	Check if the node:6 images is available, if not, pull it from Docker Hub by command `docker pull node:6`
+##### You should run the node js on AWS ECR, because each time you build, you don't waste time and bandwidth to download it from Docker Hub again, and it will lead to alarm *limit resource* from Docker. Current node maybe  node:11, you may use the latest one, but I use node:6 to demo the upgrade from node:6 to node:11
 ```
 cloud_user@chauphan1c:~/DancingQueen$ docker images
 REPOSITORY                                 TAG                 IMAGE ID            CREATED             SIZE
@@ -142,15 +142,15 @@ cloud_user@chauphan1c:~/DancingQueen$ aws ecr create-repository --repository-nam
 ```
 6.	Docker login to Repository URI as above
 
+```
 aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 870472129713.dkr.ecr.us-east-1.amazonaws.com
-
 WARNING! Your password will be stored unencrypted in /home/cloud_user/.docker/config.json.
 Configure a credential helper to remove this warning. See
 https://docs.docker.com/engine/reference/commandline/login/#credentials-store
-
 Login Succeeded
+```
 
-#### Note: Your credential will be stored on config.json file. It's better use credential store as above suggestion.
+##### Note: Your credential will be stored on config.json file. It's better use credential store as above suggestion.
 
 7.	Docker tag your local `node` repository
 
@@ -174,4 +174,47 @@ golang                                              1.11                43a154fe
 node                                                6                   ab290b853066        20 months ago       884MB
 870472129713.dkr.ecr.us-east-1.amazonaws.com/node   latest              ab290b853066        20 months ago       884MB
 maven                                               3.6.0-jdk-8         938cf03ad8e9        21 months ago       636MB
+```
+8.	Put the docker node image to AWS ECR repository node. It’s better to use the AWS ECR repository instead of access to Docker Hub node:6 every build (to reduce cost)
+
+```
+docker push 870472129713.dkr.ecr.us-east-1.amazonaws.com/node:latest
+```
+```
+cloud_user@chauphan1c:~/DancingQueen$ docker push 870472129713.dkr.ecr.us-east-1.amazonaws.com/node:latest
+The push refers to repository [870472129713.dkr.ecr.us-east-1.amazonaws.com/node]
+f39151891503: Pushing [========================================>          ]  4.079MB/5.075MB
+f1965d3c206f: Pushing [====>                                              ]   3.65MB/43.3MB
+a27518e43e49: Pushing [==================================================>]  349.2kB
+910d7fd9e23e: Pushing [>                                                  ]  1.104MB/562.2MB
+4230ff7f2288: Pushing [>                                                  ]  1.598MB/141.8MB
+2c719774c1e1: Waiting
+ec62f19bb3aa: Waiting
+f94641f1fe1f: Waiting
+```
+9.	Modify the Dockerfile to get AWS ECR node repository instead of Docker Hub repository. Change the line using Docker Hub node:6
+
+FROM node:6
+
+-->	FROM 870472129713.dkr.ecr.us-east-1.amazonaws.com/node:latest
+
+##### Your final file is as below
+
+```
+FROM 870472129713.dkr.ecr.us-east-1.amazonaws.com/node:latest
+
+# Deps
+RUN apt-get update && apt-get install -y ca-certificates git-core ssh nginx
+
+# Our source
+WORKDIR /var/www/html/
+ADD . /var/www/html
+ADD default /etc/nginx/sites-available
+
+# Start nginx
+RUN service nginx start
+# Install node deps for each app
+RUN npm install --quiet
+CMD ["npm","start"]
+EXPOSE 5000/tcp
 ```
