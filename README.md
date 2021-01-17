@@ -291,7 +291,9 @@ cloud_user@chauphan1c:~/DancingQueen$
 ![Admin](./.github/workflows/2.png)
 
 
-##### Choose the operating system, runtime and image.Make sure to check the tick box “Enable this flag if you want to build Docker Image … ”
+##### Choose the operating system, runtime and image
+
+> Make sure that you checked the tick box “Enable this flag if you want to build Docker Image … ”
 
 ![Admin](./.github/workflows/3.png)
 
