@@ -1,5 +1,6 @@
 # How to apply CI/CD to AWS Kubernetes
 #### This is the demo how to build and apply an web nodejs application to AWS Kubernetes cluster using CodeCommit, CodeBuilt and CodePipeline. We use CodeCommit with dancing-queen repository, use CodeBuild to build NodeJs application and create Docker image, put this image to AWS ECR and ready to use this image apply to AWS EKS.
+#### P/S: Dancing-queen is the simple website (NodeJS) I wrote for a foundation, we support "Better walk than drink and drive". I've just learned CSS/HTML/NodeJS for 02-week short course.
 
 ## Create AWS EKS using eksctl
 ##### I would like to use eksctl to create AWS EKS for the demo, but you feel free to create it using any tool you'd like, for ex: kops, kubeadm, Terraform, CloudFormation. You need to have bastion host or laptop with docker, kubectl and AWS CLI installed.
@@ -11,7 +12,6 @@
 ##### This command is create AWS EKS cluster on region us-east-1, two AZs us-east-1a and us-east-1b, node type: t3.medium, with Full ECR Access, Mesh service, ALB access. It also creates the Node Group for you. Usually it takes around 10-15 minutes to finish so please be patient. :). If you have any query, please refer to eksctl --help for the detail
 3. Git clone the respository
 ```git clone https://github.com/ptchau2003/DancingQueen.git```
-##### This is the simple website (NodeJS) I wrote for charity foundation, we run and donate for the children. I've just learned CSS/HTML/NodeJS for 02-week short course.
 ```
 cloud_user@chauphan1c:~$ git clone https://github.com/ptchau2003/DancingQueen.git
 Cloning into 'DancingQueen'...
