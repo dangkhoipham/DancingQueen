@@ -192,11 +192,11 @@ ec62f19bb3aa: Waiting
 f94641f1fe1f: Waiting
 ```
 9.	Modify the Dockerfile to get AWS ECR node repository instead of Docker Hub repository. Change the line using Docker Hub node:6
-
+```
 FROM node:6
 
 -->	FROM 870472129713.dkr.ecr.us-east-1.amazonaws.com/node:latest
-
+```
 ##### Your final file is as below
 
 ```
@@ -219,7 +219,7 @@ EXPOSE 5000/tcp
 ```
 
 10.	Go to k8s directory, modify deployment.yaml file, the image will use ECR image after built
-
+```
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -238,11 +238,12 @@ spec:
         - command:
             - npm
             - start
-          image: 870472129713.dkr.ecr.us-east-1.amazonaws.com/dancing-queen:latest
+          `image: 870472129713.dkr.ecr.us-east-1.amazonaws.com/dancing-queen:latest`
           imagePullPolicy: Always
           name: dancing-queen-web
           ports:
             - containerPort: 5000
+```
 11.	Generate Access Key for CodeCommit
 Go to IAM --> User --> your user --> Security Credential Tab --> HTTPS Git credentials for CodeCommit.
 Click Generate credentials and remember your access key ID and access key secret
