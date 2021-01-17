@@ -218,7 +218,7 @@ CMD ["npm","start"]
 EXPOSE 5000/tcp
 ```
 
-10.	Go to k8s directory, modify deployment.yaml file, the image will use ECR image after built
+10.	Go to k8s directory, modify deployment.yaml file, image line, the image will use AWS ECR `dancing-queen:latest` image after built
 ```
 apiVersion: apps/v1
 kind: Deployment
@@ -238,7 +238,7 @@ spec:
         - command:
             - npm
             - start
-          `image: 870472129713.dkr.ecr.us-east-1.amazonaws.com/dancing-queen:latest`
+          image: 870472129713.dkr.ecr.us-east-1.amazonaws.com/dancing-queen:latest
           imagePullPolicy: Always
           name: dancing-queen-web
           ports:
@@ -247,3 +247,143 @@ spec:
 11.	Generate Access Key for CodeCommit
 Go to IAM --> User --> your user --> Security Credential Tab --> HTTPS Git credentials for CodeCommit.
 Click Generate credentials and remember your access key ID and access key secret
+12.	Create CodeCommit repository
+```
+cloud_user@chauphan1c:~/DancingQueen$ aws codecommit create-repository --repository-name dancing-queen
+{
+    "repositoryMetadata": {
+        "accountId": "870472129713",
+        "repositoryId": "2fee4cfc-7ae0-469c-a15e-591d6675ecce",
+        "repositoryName": "dancing-queen",
+        "lastModifiedDate": "2021-01-11T08:17:49.239000+00:00",
+        "creationDate": "2021-01-11T08:17:49.239000+00:00",
+        "cloneUrlHttp": "https://git-codecommit.us-east-1.amazonaws.com/v1/repos/dancing-queen",
+        "cloneUrlSsh": "ssh://git-codecommit.us-east-1.amazonaws.com/v1/repos/dancing-queen",
+        "Arn": "arn:aws:codecommit:us-east-1:870472129713:dancing-queen"
+    }
+}
+```
+13.	Put local dancing queen repository to AWS CodeCommit
+```
+git push https://git-codecommit.us-east-1.amazonaws.com/v1/repos/dancing-queen
+Use the access key ID and token you create on above step
+```
+```
+cloud_user@chauphan1c:~/DancingQueen$ git push https://git-codecommit.us-east-1.amazonaws.com/v1/repos/dancing-queen
+Username for 'https://git-codecommit.us-east-1.amazonaws.com': 
+Password for 'https://cloud_user-at-870472129713@git-codecommit.us-east-1.amazonaws.com':
+Counting objects: 92, done.
+Delta compression using up to 2 threads.
+Compressing objects: 100% (81/81), done.
+Writing objects: 100% (92/92), 86.02 MiB | 11.89 MiB/s, done.
+Total 92 (delta 10), reused 0 (delta 0)
+To https://git-codecommit.us-east-1.amazonaws.com/v1/repos/dancing-queen
+ * [new branch]      main -> main
+cloud_user@chauphan1c:~/DancingQueen$
+```
+14.	Create CodeBuild 
+```
+Source: AWS CodeCommit, repository: dancing-queen
+```
+<img>
+
+```
+Choose the operating system, runtime and image.
+Make sure to check the tick box “Enable this flag if you want to build Docker Image…”
+```
+ 
+
+15.	At the Build Command, chose Insert Build command and Switch to Editor
+ 
+<img>
+
+16.	Put the buildspec.yaml file, make sure the ECR and repository name is correct
+```
+version: 0.2
+env:
+  variables:
+      AWS_REGION: "us-east-1"
+      AWS_ECR: "870472129713.dkr.ecr.us-east-1.amazonaws.com"
+      IMAGE_REPO_NAME: "dancing-queen"
+      IMAGE_TAG: "latest"
+  #parameter-store:
+     # key: "value"
+     # key: "value"
+  #secrets-manager:
+     # key: secret-id:json-key:version-stage:version-id
+     # key: secret-id:json-key:version-stage:version-id
+  #exported-variables:
+     # - variable
+     # - variable
+  #git-credential-helper: yes
+#batch:
+  #fast-fail: true
+  #build-list:
+  #build-matrix:
+  #build-graph:
+phases:
+  #install:
+    #If you use the Ubuntu standard image 2.0 or later, you must specify runtime-versions.
+    #If you specify runtime-versions and use an image other than Ubuntu standard image 2.0, the build fails.
+    #runtime-versions:
+      # name: version
+      # name: version
+   # commands:
+  pre_build:
+    commands:
+       - echo "Login to AWS ECR"
+       - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ECR
+  build:
+    commands:
+      - docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG .
+      - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ECR/$IMAGE_REPO_NAME:$IMAGE_TAG
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker image...
+      - docker push $AWS_ECR/$IMAGE_REPO_NAME:$IMAGE_TAG
+```
+17.	Check the service role of the CodeBuild, we will add policy to allow it write to AWS ECR
+
+ <img>
+
+##### Click to it and go to IAM console, add policy
+
+ 
+##### Choose ECR Power and click attach policy, it allows CodeBuild to write your created image to AWS ECR
+
+ 
+
+18.	Create CodePipeline EKS-CICD
+
+<img>
+
+##### Source stage refer to AWS CodeCommit repository
+
+<img>
+ 
+##### Add build stage refer to CodeBuild project we created.
+ 
+
+##### Skip the deploy stage, we will use Build stage in next
+
+ 
+
+###### And Create Pipeline
+
+19.	Try to change code in CodeCommit and see the build stage trigger, build new image and put the latest image to AWS ECR
+ 
+<img>
+
+##### Click Details and see the Build stage log
+ 
+<img>
+
+##### Image is pushed
+
+<img> 
+
+ 
+
+
+
