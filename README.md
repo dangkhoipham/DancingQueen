@@ -245,8 +245,10 @@ spec:
             - containerPort: 5000
 ```
 11.	Generate Access Key for CodeCommit
+
 Go to IAM --> User --> your user --> Security Credential Tab --> HTTPS Git credentials for CodeCommit.
 Click Generate credentials and remember your access key ID and access key secret
+
 ![Admin](./.github/workflows/1.png)
 12.	Create CodeCommit repository
 ```
@@ -289,7 +291,7 @@ cloud_user@chauphan1c:~/DancingQueen$
 ![Admin](./.github/workflows/2.png)
 
 
-##### Choose the operating system, runtime and image.Make sure to check the tick box “Enable this flag if you want to build Docker Image…”
+##### Choose the operating system, runtime and image.Make sure to check the tick box “Enable this flag if you want to build Docker Image … ”
 
 ![Admin](./.github/workflows/3.png)
 
