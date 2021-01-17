@@ -357,32 +357,34 @@ phases:
  
 ##### Choose ECR Power and click attach policy, it allows CodeBuild to write your created image to AWS ECR
 
-![Admin](./.github/workflows/7.png) 
+![Admin](./.github/workflows/15.png) 
 
 18.	Create CodePipeline EKS-CICD
 
-![Admin](./.github/workflows/8.png)
+![Admin](./.github/workflows/7.png)
 
 ##### Source stage refer to AWS CodeCommit repository
 
-![Admin](./.github/workflows/9.png)
+![Admin](./.github/workflows/8.png)
  
 ##### Add build stage refer to CodeBuild project we created.
  
-![Admin](./.github/workflows/10.png)
+![Admin](./.github/workflows/9.png)
 
 ##### Skip the deploy stage, we will use Build stage in next
 
-![Admin](./.github/workflows/11.png) 
+![Admin](./.github/workflows/10.png) 
 
 ###### And Create Pipeline
 
 19.	Try to change code in CodeCommit and see the build stage trigger, build new image and put the latest image to AWS ECR
  
-![Admin](./.github/workflows/12.png) 
+![Admin](./.github/workflows/11.png) 
 
 ##### Click Details and see the Build stage log
  
+![Admin](./.github/workflows/12.png) 
+
 ![Admin](./.github/workflows/13.png) 
 
 ##### Image is pushed
