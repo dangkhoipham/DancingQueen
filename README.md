@@ -396,7 +396,7 @@ phases:
 
 # Using CodeBuild buildspec.yaml to CI/CD apply to AWS EKS (cont.)
 ##### There are 02 options you can apply in this stage: 
-##### 1. using CodeBuild buildspec.yaml as a tricky stage to apply k8s manifest. 
+##### 1. Using CodeBuild buildspec.yaml as a tricky stage to apply k8s manifest. 
 ##### 2. Using Lambda to to apply k8s manifest. 
 ##### I use option 1 :)
 
@@ -405,27 +405,27 @@ The purpose of this role creation: this role allows CodeBuild to run kubectl app
 
 ![Admin](./.github/workflows/1-1.png) 
 
-#### Nextstep
+### Next step
 
 ![Admin](./.github/workflows/1-3.png) 
 
-#### Next step
+### Next step
 
 ![Admin](./.github/workflows/1-2.png)
 
-#### Next step
+### Next step
 
 ![Admin](./.github/workflows/1-4.png)
 
-#### Next step
+### Next step
 
 ![Admin](./.github/workflows/1-5.png)
 
-#### Next step
+### Next step
 
 ![Admin](./.github/workflows/1-6.png)
 
-#### End
+### End
 
 20.	Create CodeBuild project name “Deploy” with the Role name we’ve already created.
 
