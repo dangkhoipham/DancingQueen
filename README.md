@@ -405,25 +405,27 @@ The purpose of this role creation: this role allows CodeBuild to run kubectl app
 
 ![Admin](./.github/workflows/1-1.png) 
 
-##### Nextstep
+#### Nextstep
 
 ![Admin](./.github/workflows/1-3.png) 
 
-##### Next step
+#### Next step
 
 ![Admin](./.github/workflows/1-2.png)
 
-##### Next step
+#### Next step
 
 ![Admin](./.github/workflows/1-4.png)
 
-##### Next step
+#### Next step
 
 ![Admin](./.github/workflows/1-5.png)
 
-##### Next step
+#### Next step
 
 ![Admin](./.github/workflows/1-6.png)
+
+#### End
 
 20.	Create CodeBuild project name “Deploy” with the Role name we’ve already created.
 
