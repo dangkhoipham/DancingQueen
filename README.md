@@ -1,8 +1,7 @@
 # How to apply CI/CD to AWS Kubernetes
 #### This is the demo how to build and apply an web nodejs application to AWS Kubernetes cluster using CodeCommit, CodeBuilt and CodePipeline
 ## Create AWS EKS using eksctl
-### I would like to use eksctl to create AWS EKS for the demo, but you feel free to create it using any tool you'd like, for ex: kops, kubeadm, Terraform, CloudFormation
-#### You need to have bastion host or laptop with docker, kubectl and AWS CLI installed.
+##### I would like to use eksctl to create AWS EKS for the demo, but you feel free to create it using any tool you'd like, for ex: kops, kubeadm, Terraform, CloudFormation. You need to have bastion host or laptop with docker, kubectl and AWS CLI installed.
 1. Input AWS credentials
 ```aws configure```
 ##### Input Access Key ID, Access Key secret, region and json type
@@ -218,3 +217,32 @@ RUN npm install --quiet
 CMD ["npm","start"]
 EXPOSE 5000/tcp
 ```
+
+10.	Go to k8s directory, modify deployment.yaml file, the image will use ECR image after built
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dancingqueen-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dancingqueen-web
+  template:
+    metadata:
+      labels:
+        app: dancingqueen-web
+    spec:
+      containers:
+        - command:
+            - npm
+            - start
+          image: 870472129713.dkr.ecr.us-east-1.amazonaws.com/dancing-queen:latest
+          imagePullPolicy: Always
+          name: dancing-queen-web
+          ports:
+            - containerPort: 5000
+11.	Generate Access Key for CodeCommit
+Go to IAM --> User --> your user --> Security Credential Tab --> HTTPS Git credentials for CodeCommit.
+Click Generate credentials and remember your access key ID and access key secret
