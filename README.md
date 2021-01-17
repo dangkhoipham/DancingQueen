@@ -405,9 +405,9 @@ The purpose of this role creation: this role allows CodeBuild to run kubectl app
 
 ![Admin](./.github/workflows/1-1.png) 
 
-![Admin](./.github/workflows/1-2.png) 
+![Admin](./.github/workflows/1-3.png) 
 
-![Admin](./.github/workflows/1-3.png)
+![Admin](./.github/workflows/1-2.png)
 
 ![Admin](./.github/workflows/1-4.png)
 
