@@ -500,7 +500,7 @@ phases:
     # - paths
 ```
 22.	Edit aws config map of EKS and add new role to RBAC of EKS cluster
-The mapRoles below is: hey, k8s, with the role CodeBuild-EKS-Role, please map it to username: cloud-admin and group: system-masters in k8s priviledges.
+> The mapRoles below is: "Hey, k8s, with the role CodeBuild-EKS-Role, please map it to username: cloud-admin and group: system-masters in k8s priviledges".
 
 ##### kubectl edit configmaps aws-auth -n kube-system
 ```
