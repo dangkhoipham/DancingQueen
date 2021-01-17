@@ -395,13 +395,17 @@ phases:
 ![Admin](./.github/workflows/14.png) 
 
 # Using CodeBuild buildspec.yaml to CI/CD apply to AWS EKS (cont.)
-##### There are 02 options you can apply in this stage: 1. using CodeBuild buildspec.yaml as a tricky stage to apply k8s manifest. 2. Using Lambda to to apply k8s manifest. I use option 1 :)
+##### There are 02 options you can apply in this stage: 
+##### 1. using CodeBuild buildspec.yaml as a tricky stage to apply k8s manifest. 
+##### 2. Using Lambda to to apply k8s manifest. 
+##### I use option 1 :)
+
 1.	Create new Role with Trust Policy codebuild.amazonaws.com and Policy “Describe Cluster”
-It allows CodeBuild to run kubectl apply -f <file>.yaml to EKS
+The purpose of this role creation: this role allows CodeBuild to run kubectl apply -f <file>.yaml to EKS
 
 ![Admin](./.github/workflows/1-1.png) 
 
-![Admin](./.github/workflows/1-1.png) 
+![Admin](./.github/workflows/1-2.png) 
 
 ![Admin](./.github/workflows/1-3.png)
 
