@@ -283,15 +283,14 @@ To https://git-codecommit.us-east-1.amazonaws.com/v1/repos/dancing-queen
 cloud_user@chauphan1c:~/DancingQueen$
 ```
 14.	Create CodeBuild 
-```
-Source: AWS CodeCommit, repository: dancing-queen
-```
+
+##### Source provider : AWS CodeCommit, repository: dancing-queen
+
 ![Admin](./.github/workflows/2.png)
 
-```
-Choose the operating system, runtime and image.
-Make sure to check the tick box “Enable this flag if you want to build Docker Image…”
-```
+
+##### Choose the operating system, runtime and image.Make sure to check the tick box “Enable this flag if you want to build Docker Image…”
+
 ![Admin](./.github/workflows/3.png)
 
 15.	At the Build Command, chose Insert Build command and Switch to Editor
