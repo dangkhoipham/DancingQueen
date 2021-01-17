@@ -385,13 +385,15 @@ phases:
  
 ![Admin](./.github/workflows/12.png) 
 
+##### Image is pushed successfully
+
 ![Admin](./.github/workflows/13.png) 
 
-##### Image is pushed
+##### Summary: End of this step, we use CodeCommit with dancing-queen repository, use CodeBuild to build NodeJs application and create Docker image, put this image to AWS ECR and ready to use this image apply to AWS EKS.
 
 ![Admin](./.github/workflows/14.png) 
 
- 
+# Using CodeBuild buildspec.yaml to CI/CD apply to AWS EKS (cont.)
 
 
 
